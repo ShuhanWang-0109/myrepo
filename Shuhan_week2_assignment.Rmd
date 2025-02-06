@@ -1,0 +1,122 @@
+---
+title: "Week_2_Lab_Assignment"
+author: "Shuhan Wang"
+date: "2025-01-21"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+## (1) Measures of location and data spread
+
+### a. What is the mean fidder crab carapace side?
+
+```{r}
+library(readr)
+crab_data<-read_csv("pie_crab.csv")
+str(crab_data)
+mean(crab_data$size, na.rm = T)
+```
+
+### b. What is the median fiddler crab carapace size?
+
+```{r}
+median(crab_data$size, na.rm = T)
+
+```
+
+### c. What is the SD in fiddler crab carapace size?
+
+```{r}
+sd(crab_data$size, na.rm = T)
+```
+
+## (2) Creating HIstograms
+
+### a. historgram of fiddler crab carapace size (accross all sites)
+
+```{r}
+library(ggplot2)
+ggplot(crab_data, aes(x = size)) +
+  geom_histogram(binwidth = 1, 
+                 fill = "lightblue", 
+                 color = "black") +
+  labs(title = "Histogram of Fiddler Crab Carapace Size",
+       x = "Crab Carapace Size (mm)", 
+       y = "Frequency") +
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))
+  
+```
+
+
+
+### b. histogram of fibber crab carapace size (each sites)
+
+```{r}
+ggplot(crab_data, aes(x = size)) +
+  geom_histogram(binwidth = 1, 
+                 fill = "green3", 
+                 color = "black") +
+  facet_wrap(~site) +  
+  labs(title = "Histogram of Fiddler Crab Carapace Size by Each Site",
+       x = "Crab Carapace Size (mm)", 
+       y = "Frequency") +
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5)) 
+```
+
+### c. How do the raw values of fiddler crab carapace size in your first figure compare to the mean and median calues you calculated above? Based on your second figure, do any sites play any differences in their data distribution?
+```{r}
+BC<-subset(crab_data, name=="Bare Cove Park")
+mean(BC$size, na.rm = T)
+
+```
+
+From the frequency distribution, the largest proportion is at the size around 13, and the size of 14-16 is at the middle, which is consistent with the mean size, which is 14.65801, and the median is 14.435. In the second figure, the crabs in BC, the size around 15 is with the less frequency, and the calculated mean results show that the mean size in this area is 16.1973. CT, JC also shows similar pattern. In PIE, it seems the carbs size are above 15, in contrast, crabs in SI are almost below 15mm. In NIB, crab sizes are generally uniformed. 
+
+## Data Visulization
+
+### a. A new plot examining any other relationship
+
+```{r}
+ggplot(data = crab_data, aes(x = size, y = water_temp)) +
+  geom_point(color = "blue4", size = 0.5) +
+  geom_smooth(method = "lm", color = "lightgreen", se = TRUE, linetype = "dashed") +
+  labs(
+    title = "Relationship Between Crab Size and Water Temperature",
+    x = "Crab Carapace Size (mm)",
+    y = "Water Temperature (°C)"
+  ) +
+  theme_bw()+
+  theme(
+    plot.title = element_text(
+      hjust = 0.5,            
+      size = 14,              
+      face = "bold"   
+    ),
+    axis.title = element_text(
+      size = 12,              
+      face = "bold"          
+    ),
+    axis.text = element_text(
+      size = 12,              
+      face = "italic"        
+    )
+  )
+       
+
+```
+This figure shows the relationship between the crab carapace size and the water temperature. when the water temperature is below 17.5°C, more crab size concentrate on 15-20mm, and when the water temperature is above 20°C, the size of crab are more between 10-15mm. And the trend shows that, within the range of 12.5°C to 25°C,  when the water temperature is lower, the size of crabs is getting bigger. 
+
+
+
+### b. worst version of the figure
+```{r}
+ggplot(data = crab_data, aes(x = size, y = water_temp)) +
+  geom_point(shape = 17, color = "blue", size = 5) +
+  geom_line()
+```
+
+
